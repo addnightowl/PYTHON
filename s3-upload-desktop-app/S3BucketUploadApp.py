@@ -6,6 +6,8 @@ This is a simple desktop application that allows you to upload files to an S3 bu
 import tkinter as tk
 # Importing the file dialog module from tkinter.
 from tkinter import filedialog
+# Importing the customtkinter module for the custom toggle switch.
+import customtkinter as ctk
 # Importing the boto3 library for interacting with AWS services.
 import boto3
 # Importing the NoCredentialsError and PartialCredentialsError exceptions from the botocore library.
@@ -73,6 +75,7 @@ s3 = boto3.client(
     region_name=AWS_REGION,
 )
 
+# Function to show a preview of the selected file in the GUI.
 def show_preview(file_path):
     file_extension = pathlib.Path(file_path).suffix[1:].lower()
     
@@ -127,11 +130,13 @@ def on_entry_change(*args):
     # Check if the bucket_name_entry is empty.
     if bucket_name_var.get():
         upload_button.config(state=tk.NORMAL)
-        folder_checkbox.config(state=tk.NORMAL)
+        # folder_checkbox.config(state=tk.NORMAL)
+        folder_switch.configure(state=tk.NORMAL)
     # If the bucket_name_entry is empty, disable the create_button and folder_checkbox.
     else:
         upload_button.config(state=tk.DISABLED)
-        folder_checkbox.config(state=tk.DISABLED)
+        # folder_checkbox.config(state=tk.DISABLED)
+        folder_switch.configure(state=tk.DISABLED)
 
 # Function to refresh the GUI.
 def refresh_gui():
@@ -141,8 +146,6 @@ def refresh_gui():
     preview_label.image=None
     # Resetting the message label.
     message_label.config(text="")
-    # # Resetting the results label.
-    # results_label.config(text="")
         
 # Function to open file dialog and get the selected file path.
 def open_file_dialog():
@@ -157,9 +160,11 @@ def open_file_dialog():
         show_preview(file_path)
         # Upload the file to the specified bucket and or bucket/folder.
         upload_file(file_path, bucket_name, folder_name)
-        
+
+# Function to toggle the folder entry field based on the toggle switch.
 def toggle_folder_checkbox():
-    if folder_checkbox_var.get():
+    # if folder_checkbox_var.get():
+    if folder_swtich_var.get():
         folder_entry.config(state=tk.NORMAL)
     else:
         folder_entry.config(state=tk.DISABLED)
@@ -172,7 +177,7 @@ root.title("S3 Bucket Upload App")
 root.geometry("500x475")
 
 # Creating and placing the 'Bucket Name' label and entry field on the GUI.
-bucket_label = tk.Label(root, text="Bucket Name (Required):")
+bucket_label = tk.Label(root, text="Bucket Name (Required):", relief="groove")
 # Placing the Bucket Name Label on the GUI.
 bucket_label.pack(pady=5)
 # Using a StringVar to monitor changes in the entry widget
@@ -180,28 +185,28 @@ bucket_name_var = tk.StringVar()
 # Setting the initial value of the StringVar to an empty string
 bucket_name_var.trace_add("write", on_entry_change)
 # Creating the Bucket Name Entry field on the GUI.
-bucket_name_entry = tk.Entry(root, textvariable=bucket_name_var)
+bucket_name_entry = tk.Entry(root, textvariable=bucket_name_var, relief="sunken")
 # Placing the Bucket Name Entry field on the GUI.
 bucket_name_entry.pack(pady=5)
 
 # Creating and placing the 'Folder Name' label and entry field on the GUI.
-folder_label = tk.Label(root, text="Folder Name (Optional):")
+folder_label = tk.Label(root, text="Folder Name (Optional):", relief="groove")
 # Placing the Folder Name Label on the GUI.
 folder_label.pack(pady=5)
 # Creating the Folder Name Entry field on the GUI.
-folder_entry = tk.Entry(root, state=tk.DISABLED)
+folder_entry = tk.Entry(root, relief="sunken", state=tk.DISABLED)
 # Placing the Folder Name Entry field on the GUI.
 folder_entry.pack(pady=5)
 # Using a StringVar to monitor changes in the entry widget.
-folder_checkbox_var = tk.IntVar()
-# Creating the Checkbutton to confirm adding a folder name.
-folder_checkbox = tk.Checkbutton(root, text="Select: To use an existing folder or create a new folder!", variable=folder_checkbox_var, command=toggle_folder_checkbox, state=tk.DISABLED)
-# Placing the Checkbutton on the GUI.
-folder_checkbox.pack(pady=5)
+folder_swtich_var = tk.IntVar()
+# Creating the Toggle Switch to confirm adding a folder name.
+folder_switch = ctk.CTkSwitch(root, text="Toggle to input existing folder name or\n input a new name to create a new folder!", variable=folder_swtich_var, command=toggle_folder_checkbox, state=ctk.DISABLED)
+# Placing the Toggle Switch on the GUI.
+folder_switch.pack(pady=5)
 
 # Creating a frame for the image preview within the main GUI window
 # Setting the width and height to match the thumbnail size
-preview_frame = tk.Frame(root, bd=2, relief="ridge", width=100, height=100)
+preview_frame = tk.Frame(root, bd=2, relief="sunken", width=100, height=100)
 # Placing the preview frame in the GUI.
 preview_frame.pack(pady=10, padx=10)
 # Ensure the frame doesn't shrink. If you want it to expand to fit the image, you can omit this.
@@ -212,7 +217,7 @@ preview_label = tk.Label(preview_frame)
 preview_label.pack(pady=10)
 
 # Creating a frame for the message label within the main GUI window
-message_frame = tk.Frame(root, bd=2, relief="ridge")
+message_frame = tk.Frame(root, bd=2, relief="sunken")
 # Placing the message frame in the GUI.
 message_frame.pack(pady=10, padx=10, fill="x")
 # Creating and placing the message label to display messages on the GUI.
@@ -221,7 +226,7 @@ message_label = tk.Label(message_frame, text="", wraplength=350)
 message_label.pack(pady=5)
 
 # Creating and placing the 'Upload File' button on the GUI.
-upload_button = tk.Button(root, text="Upload File", command=open_file_dialog, state=tk.DISABLED)  # Initially disabled
+upload_button = tk.Button(root, text="Upload File", relief="raised", command=open_file_dialog, state=tk.DISABLED, foreground="green")  # Initially disabled
 # Placing the Upload File Button on the GUI.
 upload_button.pack(pady=10)
 
