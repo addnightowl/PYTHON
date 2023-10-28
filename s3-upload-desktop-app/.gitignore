@@ -24,6 +24,9 @@ myS3BucketUploadApp.py
 
 # environment
 .env
+# For macOS
+.DS_Store
+.github/.DS_Store
 
 # virtualenv
 venv/
@@ -39,10 +42,6 @@ dist/
 .cache/
 
 .ipynb_checkpoints/
-
-# For macOS
-.DS_Store
-.github/.DS_Store
 
 # For Windows
 Thumbs.db
