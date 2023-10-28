@@ -1,0 +1,7 @@
+tkinterdnd2
+customtkinter
+boto3
+botocore
+python-dotenv
+Pillow
+requests

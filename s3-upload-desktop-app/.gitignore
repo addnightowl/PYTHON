@@ -1,6 +1,6 @@
 # misc
 *.pem
-*.txt
+# *.txt
 *.out
 *.log
 *.pid
@@ -24,5 +24,32 @@ myS3BucketUploadApp.py
 
 # environment
 .env
+
+# virtualenv
+venv/
+ENV/
+env/
+env.bak/
+
+build/
+dist/
+*.egg-info/
+
+*.egg
+.cache/
+
+.ipynb_checkpoints/
+
+# For macOS
 .DS_Store
 .github/.DS_Store
+
+# For Windows
+Thumbs.db
+desktop.ini
+
+# For PyCharm
+.idea/
+
+# For Visual Studio Code
+.vscode/
